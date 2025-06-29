@@ -21,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install cml
 
       - name: Run pytest and capture output
         run: |
@@ -29,6 +28,9 @@ jobs:
           echo '```' >> report.md
           pytest -v >> report.md 2>&1
           echo '```' >> report.md
+
+      - name: Setup CML
+        uses: iterative/setup-cml@v2
 
       - name: Create CML Comment
         env:
