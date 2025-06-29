@@ -6,7 +6,6 @@ on:
 jobs:
   test-and-report:
     runs-on: ubuntu-latest
-    container: docker://ghcr.io/iterative/cml:latest  # ✅ Fixed tag
     permissions:
       pull-requests: write
       contents: read
@@ -19,9 +18,10 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install cml
 
       - name: Run pytest and capture output
         run: |
@@ -35,4 +35,3 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cml comment create report.md
-:
