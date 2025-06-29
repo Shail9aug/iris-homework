@@ -6,7 +6,7 @@ on:
 jobs:
   test-and-report:
     runs-on: ubuntu-latest
-    container: docker://ghcr.io/iterative/cml:0
+    container: docker://ghcr.io/iterative/cml:latest  # ✅ Fixed tag
     permissions:
       pull-requests: write
       contents: read
@@ -35,3 +35,4 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cml comment create report.md
+:
