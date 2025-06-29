@@ -1,0 +1,37 @@
+name: Test and Comment with CML
+
+on:
+  pull_request:
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run pytest and capture output
+        run: |
+          echo '## 🧪 Pytest Results' > report.md
+          echo '```' >> report.md
+          pytest -v >> report.md 2>&1
+          echo '```' >> report.md
+
+      - name: Create CML Comment
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cml comment create report.md
